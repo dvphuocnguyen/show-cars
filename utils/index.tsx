@@ -1,11 +1,14 @@
-import { CarProps } from "@/types";
+import { CarProps , FilterProps} from "@/types";
+import { manufacturers } from '@/constants';
+import { type } from "os";
 
-export async function fetchCars(){
+export async function fetchCars(filter: FilterProps){
+	const {manufacture, year, model, limit, fuel} = filter;
     const headers = {
         'X-RapidAPI-Key': '9646935753msh9b19bc861d3b210p12c91bjsn31dc90d00e64',
 		'X-RapidAPI-Host': 'cars-by-api-ninjas.p.rapidapi.com'
     }
-    const response = await fetch('https://cars-by-api-ninjas.p.rapidapi.com/v1/cars?model=carrera', {
+    const response = await fetch(`https://cars-by-api-ninjas.p.rapidapi.com/v1/cars?make=${manufacture}&year=${year}&model=${model}&limit=${limit}&fuel_type=${fuel}`, {
         headers: headers,
     });
     const result = await response.json();
@@ -30,18 +33,30 @@ export const calculateCarRent = (city_mpg: number, year: number) => {
 	return rentalRatePerDay.toFixed(0);
 };
 
-export const generateCarImageUrl = (car: CarProps, angle?: string) =>{
-	//key...
-	const url = new URL('https://cdn.imagin.studio/getimage');
-	
-	const {make, year, model} =  car;
-	
-	url.searchParams.append('customer', 'vnbkdn');
-	url.searchParams.append('modelFamily', model.split('')[0]);
+export const generateCarImageUrl = (car: CarProps, angle?: string) => {
+	const url = new URL("https://cdn.imagin.studio/getimage");
+	const { make, model, year } = car;
+  
+	url.searchParams.append('customer','vnbkdn');
+	url.searchParams.append('make', make);
+	url.searchParams.append('modelFamily', model.split(" ")[0]);
 	url.searchParams.append('zoomType', 'fullscreen');
 	url.searchParams.append('modelYear', `${year}`);
+	// url.searchParams.append('zoomLevel', zoomLevel);
 	url.searchParams.append('angle', `${angle}`);
+  
+	return `${url}`;
+  } 
 
+export const updateSearchParams = (type: string, value: string) => {
+	 // Get the current URL search params
+	 const searchParams = new URLSearchParams(window.location.search);
 
-return `${url}`
+	 // Set the specified search parameter to the given value
+	 searchParams.set(type, value);
+   
+	 // Set the specified search parameter to the given value
+	 const newPathname = `${window.location.pathname}?${searchParams.toString()}`;
+   
+	 return newPathname;
 }

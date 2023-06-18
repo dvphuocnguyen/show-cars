@@ -7,5 +7,6 @@ import SearchBar from "./SearchBar";
 import SeachMenuFeature from "./SeachMenuFeature";
 import CarCard from "./CarCard";
 import CarDetails from "./CarDetails";
+import ShowMore from "./ShowMore";
 
-export { Hero, CustomButton, Navbar, Footer , CustomFilter, SearchBar ,SeachMenuFeature, CarCard , CarDetails}
+export { Hero, CustomButton, Navbar, Footer , CustomFilter, SearchBar ,SeachMenuFeature, CarCard , CarDetails, ShowMore}
